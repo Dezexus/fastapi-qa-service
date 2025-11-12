@@ -7,7 +7,7 @@ from app.dependencies.database import get_db
 
 router = APIRouter()
 
-@router.post("/questions/{question_id}/answers/", response_model=AnswerResponse)
+@router.post("/{question_id}/answers/", response_model=AnswerResponse)
 def create_answer(question_id: int, answer: AnswerCreate, db: Session = Depends(get_db)):
     db_question = crud_question.get_question(db, question_id)
     if not db_question:
