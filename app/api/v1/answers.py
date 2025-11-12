@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.crud import answer as crud_answer
+from app.crud import question as crud_question
 from app.schemas.answer import AnswerCreate, AnswerResponse
 from app.dependencies.database import get_db
 
@@ -8,7 +9,6 @@ router = APIRouter()
 
 @router.post("/questions/{question_id}/answers/", response_model=AnswerResponse)
 def create_answer(question_id: int, answer: AnswerCreate, db: Session = Depends(get_db)):
-    from app.crud import question as crud_question
     db_question = crud_question.get_question(db, question_id)
     if not db_question:
         raise HTTPException(status_code=404, detail="Question not found")
