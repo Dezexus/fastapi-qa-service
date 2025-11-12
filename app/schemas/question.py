@@ -1,5 +1,5 @@
 from datetime import datetime
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Optional
 from app.schemas.answer import AnswerResponse
 
@@ -14,5 +14,4 @@ class QuestionResponse(QuestionBase):
     created_at: datetime
     answers: Optional[List[AnswerResponse]] = []
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)

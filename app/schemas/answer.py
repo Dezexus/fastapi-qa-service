@@ -1,5 +1,5 @@
 from datetime import datetime
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 class AnswerBase(BaseModel):
     text: str = Field(..., min_length=1, max_length=1000)
@@ -13,5 +13,4 @@ class AnswerResponse(AnswerBase):
     question_id: int
     created_at: datetime
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
