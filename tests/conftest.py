@@ -8,8 +8,8 @@ from app.main import app
 import os
 
 # Подключаем тестовую БД
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:postgres@localhost:5433/qadb_test")
-engine = create_engine(DATABASE_URL)
+DATABASE_TEST_URL = os.getenv("DATABASE_URL", "postgresql://postgres:postgres@localhost:5433/qadb_test")
+engine = create_engine(DATABASE_TEST_URL)
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 # Создание таблиц перед тестами
