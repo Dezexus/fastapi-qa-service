@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from typing import List
 from app.crud import question as crud_question
@@ -17,14 +17,8 @@ def create_question(question: QuestionCreate, db: Session = Depends(get_db)):
 
 @router.get("/{question_id}", response_model=QuestionResponse)
 def read_question(question_id: int, db: Session = Depends(get_db)):
-    db_question = crud_question.get_question(db, question_id)
-    if not db_question:
-        raise HTTPException(status_code=404, detail="Question not found")
-    return db_question
+    return crud_question.get_question(db, question_id)
 
 @router.delete("/{question_id}", response_model=QuestionResponse)
 def delete_question(question_id: int, db: Session = Depends(get_db)):
-    db_question = crud_question.delete_question(db, question_id)
-    if not db_question:
-        raise HTTPException(status_code=404, detail="Question not found")
-    return db_question
+    return crud_question.delete_question(db, question_id)
