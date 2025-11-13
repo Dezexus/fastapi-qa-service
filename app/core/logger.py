@@ -3,15 +3,18 @@ import sys
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
 import json
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from typing import Any, Dict
 
 
 class JSONFormatter(logging.Formatter):
-
     def format(self, record: logging.LogRecord) -> str:
+        # Получаем текущее время в Московском часовом поясе (UTC+3)
+        moscow_tz = timezone(timedelta(hours=3))
+        timestamp = datetime.now(moscow_tz).isoformat().replace('+03:00', 'Z')
+
         log_data: Dict[str, Any] = {
-            "timestamp": datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z'),
+            "timestamp": timestamp,
             "level": record.levelname,
             "logger": record.name,
             "message": record.getMessage(),
@@ -20,7 +23,7 @@ class JSONFormatter(logging.Formatter):
             "line": record.lineno
         }
 
-        # Добавляем дополнительные поля если есть
+        # Добавляем дополнительные поля, если есть
         if hasattr(record, 'extra_data'):
             log_data.update(record.extra_data)
 
