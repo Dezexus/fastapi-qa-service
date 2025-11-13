@@ -1,5 +1,5 @@
 from datetime import datetime
-from pydantic import BaseModel, Field, validator, ConfigDict, field_validator
+from pydantic import BaseModel, Field, ConfigDict, field_validator
 
 class AnswerBase(BaseModel):
     text: str = Field(..., min_length=1, max_length=200)

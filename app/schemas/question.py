@@ -3,9 +3,6 @@ from pydantic import BaseModel, Field, ConfigDict, field_validator
 from typing import List, Optional
 from app.schemas.answer import AnswerResponse
 
-from datetime import datetime
-from pydantic import BaseModel, Field, validator
-
 class QuestionBase(BaseModel):
     text: str = Field(..., min_length=1, max_length=500)
 

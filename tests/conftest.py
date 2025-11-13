@@ -7,16 +7,13 @@ from app.core.database import Base
 from app.dependencies.database import get_db
 from app.main import app
 
-# Используем правильную переменную для тестовой БД
 DATABASE_TEST_URL = os.getenv("DATABASE_TEST_URL", "postgresql://postgres:postgres@localhost:5433/qadb_test")
 
 engine = create_engine(DATABASE_TEST_URL)
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-
 @pytest.fixture(scope="function")
 def db_session():
-    # Пересоздаем таблицы для каждого теста
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
 
@@ -25,7 +22,6 @@ def db_session():
         yield db
     finally:
         db.close()
-
 
 @pytest.fixture(scope="function")
 def client(db_session):
