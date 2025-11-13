@@ -5,30 +5,55 @@ def test_create_question(client):
     assert data["text"] == "Что такое FastAPI?"
     assert "id" in data
 
+
 def test_get_questions(client):
-    # Создаём тестовый вопрос
-    client.post("/api/v1/questions/", json={"text": "Вопрос для списка"})
+    client.post("/api/v1/questions/", json={"text": "Вопрос 1"})
+    client.post("/api/v1/questions/", json={"text": "Вопрос 2"})
+
     response = client.get("/api/v1/questions/")
     assert response.status_code == 200
-    assert isinstance(response.json(), list)
-    assert len(response.json()) >= 1
+    data = response.json()
+    assert isinstance(data, list)
+    assert len(data) == 2
+
 
 def test_get_question_by_id(client):
-    post_response = client.post("/api/v1/questions/", json={"text": "Вопрос по ID"})
-    q_id = post_response.json()["id"]
-    get_response = client.get(f"/api/v1/questions/{q_id}")
-    assert get_response.status_code == 200
-    assert get_response.json()["id"] == q_id
+    post_response = client.post("/api/v1/questions/", json={"text": "Конкретный вопрос"})
+    question_id = post_response.json()["id"]
+
+    response = client.get(f"/api/v1/questions/{question_id}")
+    assert response.status_code == 200
+    assert response.json()["id"] == question_id
+
 
 def test_delete_question(client):
     post_response = client.post("/api/v1/questions/", json={"text": "Вопрос для удаления"})
-    q_id = post_response.json()["id"]
-    del_response = client.delete(f"/api/v1/questions/{q_id}")
-    assert del_response.status_code == 200
-    # Проверка, что больше нет
-    get_response = client.get(f"/api/v1/questions/{q_id}")
+    question_id = post_response.json()["id"]
+
+    delete_response = client.delete(f"/api/v1/questions/{question_id}")
+    assert delete_response.status_code == 200
+
+    get_response = client.get(f"/api/v1/questions/{question_id}")
     assert get_response.status_code == 404
+
 
 def test_get_nonexistent_question(client):
     response = client.get("/api/v1/questions/9999")
     assert response.status_code == 404
+    assert response.json()["error"] == "Question not found"
+
+
+def test_delete_nonexistent_question(client):
+    response = client.delete("/api/v1/questions/9999")
+    assert response.status_code == 404
+
+
+def test_create_question_empty_text(client):
+    response = client.post("/api/v1/questions/", json={"text": "   "})
+    assert response.status_code == 422
+
+
+def test_create_question_too_long(client):
+    long_text = "a" * 501
+    response = client.post("/api/v1/questions/", json={"text": long_text})
+    assert response.status_code == 422
