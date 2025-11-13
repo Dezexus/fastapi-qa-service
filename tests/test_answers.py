@@ -78,7 +78,7 @@ def test_create_answer_too_long(client):
     question_response = client.post("/api/v1/questions/", json={"text": "Вопрос"})
     question_id = question_response.json()["id"]
 
-    long_text = "a" * 1001
+    long_text = "a" * 201
     response = client.post(
         f"/api/v1/answers/{question_id}/answers/",
         json={"text": long_text, "user_id": "user-123"}
