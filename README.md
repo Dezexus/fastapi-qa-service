@@ -32,11 +32,11 @@ cd fastapi-qa-service
 
 2. Запустите приложение:
 ```bash
-docker-compose up db web
+docker-compose up db web --build
 ```
 2.1 Запуск с тестовой БД:
 ```bash
-docker-compose up
+docker-compose up --build
 ```
 
 3. Приложение будет доступно по адресу: http://localhost:8000
