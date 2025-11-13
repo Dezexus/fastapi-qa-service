@@ -2,8 +2,8 @@ from datetime import datetime
 from pydantic import BaseModel, Field, ConfigDict
 
 class AnswerBase(BaseModel):
-    text: str = Field(..., min_length=1, max_length=1000)
-    user_id: str
+    text: str = Field(..., min_length=1, max_length=200)
+    user_id: str = Field(..., min_length=1, max_length=60)
 
 class AnswerCreate(AnswerBase):
     pass
