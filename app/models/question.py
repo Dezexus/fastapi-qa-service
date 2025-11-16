@@ -1,13 +1,17 @@
-from sqlalchemy import Column, Integer, String, DateTime
+from datetime import datetime
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import String, DateTime
 from sqlalchemy.sql import func
 from app.core.database import Base
-from sqlalchemy.orm import relationship
 
 class Question(Base):
     __tablename__ = "questions"
 
-    id = Column(Integer, primary_key=True, index=True)
-    text = Column(String, nullable=False)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    text: Mapped[str] = mapped_column(String, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
-    answers = relationship("Answer", back_populates="question", cascade="all, delete-orphan")
+    answers: Mapped[list["Answer"]] = relationship(
+        back_populates="question",
+        cascade="all, delete-orphan"
+    )
