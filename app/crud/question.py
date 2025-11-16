@@ -39,4 +39,4 @@ def delete_question(db: Session, question_id: int):
     db.delete(question)
     db.commit()
     logger.info(f"Question with id {question_id} deleted successfully")
-    return questionЫЫ
+    return question
