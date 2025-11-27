@@ -4,6 +4,7 @@ from pydantic import ConfigDict
 class Settings(BaseSettings):
     DATABASE_URL: str
     DATABASE_TEST_URL: str
+    REDIS_URL: str
 
     model_config = ConfigDict(env_file=".env", env_file_encoding="utf-8")
 
