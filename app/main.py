@@ -5,6 +5,7 @@ import re
 from app.core.exceptions import QuestionNotFoundException, AnswerNotFoundException
 from app.api.v1 import questions, answers
 from app.core.logger import get_logger
+from app.core.redis import redis_client
 
 # Инициализация логгера
 logger = get_logger("main")
@@ -14,14 +15,16 @@ logger = get_logger("main")
 async def lifespan(app: FastAPI):
     # Startup
     logger.info("Application starting up")
+    await redis_client.init_redis()
     yield
     # Shutdown
     logger.info("Application shutting down")
+    await redis_client.close_redis()
 
 
 app = FastAPI(
     title="Q&A API",
-    description="API for questions and answers",
+    description="API for questions and answers with Redis caching",
     version="1.0.0",
     lifespan=lifespan
 )
