@@ -8,17 +8,17 @@ from app.dependencies.database import get_db
 router = APIRouter()
 
 @router.get("/", response_model=List[QuestionResponse])
-def read_questions(db: Session = Depends(get_db)):
-    return crud_question.get_all_questions(db)
+async def read_questions(db: Session = Depends(get_db)):
+    return await crud_question.get_all_questions(db)
 
 @router.post("/", response_model=QuestionResponse)
-def create_question(question: QuestionCreate, db: Session = Depends(get_db)):
-    return crud_question.create_question(db, question)
+async def create_question(question: QuestionCreate, db: Session = Depends(get_db)):
+    return await crud_question.create_question(db, question)
 
 @router.get("/{question_id}", response_model=QuestionResponse)
-def read_question(question_id: int, db: Session = Depends(get_db)):
-    return crud_question.get_question(db, question_id)
+async def read_question(question_id: int, db: Session = Depends(get_db)):
+    return await crud_question.get_question(db, question_id)
 
 @router.delete("/{question_id}", response_model=QuestionResponse)
-def delete_question(question_id: int, db: Session = Depends(get_db)):
-    return crud_question.delete_question(db, question_id)
+async def delete_question(question_id: int, db: Session = Depends(get_db)):
+    return await crud_question.delete_question(db, question_id)
