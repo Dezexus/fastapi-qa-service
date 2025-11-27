@@ -15,11 +15,17 @@ logger = get_logger("main")
 async def lifespan(app: FastAPI):
     # Startup
     logger.info("Application starting up")
-    await redis_client.init_redis()
+    try:
+        await redis_client.init_redis()
+    except Exception as e:
+        logger.error(f"Failed to connect to Redis: {e}. Continuing without cache...")
     yield
     # Shutdown
     logger.info("Application shutting down")
-    await redis_client.close_redis()
+    try:
+        await redis_client.close_redis()
+    except Exception as e:
+        logger.error(f"Error closing Redis connection: {e}")
 
 
 app = FastAPI(
