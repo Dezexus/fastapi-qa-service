@@ -1,4 +1,4 @@
-# FastAPI Q&A Service
+# FastAPI Q&A Service (Демонстрационный проект)
 
 Сервис вопросов и ответов с REST API на FastAPI.
 
